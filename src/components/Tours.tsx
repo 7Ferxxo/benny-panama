@@ -1,8 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Clock, Check, ArrowRight } from 'lucide-react';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { Clock, Check, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
+import React from 'react';
 
 interface Tour {
   id: string;
@@ -13,6 +14,116 @@ interface Tour {
   details: string[];
   badge: string;
   whatsappMsg: string;
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 50,
+      damping: 15,
+      delay: index * 0.1,
+    },
+  }),
+};
+
+function TourCard({ tour, idx }: { tour: Tour; idx: number }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(y, [-100, 100], [4, -4]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-100, 100], [-4, 4]), { stiffness: 300, damping: 30 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set(e.clientX - rect.left - rect.width / 2);
+    y.set(e.clientY - rect.top - rect.height / 2);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  const isFeatured = tour.id === 'sanblas';
+
+  return (
+    <motion.div
+      custom={idx}
+      variants={cardVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-50px' }}
+      style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl border border-primary/5 hover:border-primary/10 transition-all duration-500 flex flex-col group${isFeatured ? ' ring-2 ring-accent/40' : ''}`}
+    >
+      {/* Image Header */}
+      <div className="relative h-[240px] overflow-hidden">
+        <Image
+          src={tour.image}
+          alt={tour.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark/70 via-dark/20 to-transparent" />
+
+        {/* Duration badge — top left */}
+        <span className="absolute top-4 left-4 flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+          <Clock className="w-3.5 h-3.5 text-accent" />
+          {tour.duration}
+        </span>
+
+        {/* Badge — top right */}
+        <span className="absolute top-4 right-4 bg-accent/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
+          {isFeatured ? '⭐ Más Popular' : tour.badge}
+        </span>
+      </div>
+
+      {/* Card Content */}
+      <div className="p-6 sm:p-8 flex flex-col flex-grow">
+        <h3 className="font-headings font-bold text-xl sm:text-2xl text-primary mb-3">
+          {tour.title}
+        </h3>
+        <p className="text-gray text-sm sm:text-base leading-relaxed mb-6 font-body">
+          {tour.desc}
+        </p>
+
+        {/* Details list */}
+        <ul className="list-none p-0 m-0 mb-8 flex flex-col gap-2.5 flex-grow">
+          {tour.details.map((detail, dIdx) => (
+            <li key={dIdx} className="flex items-center gap-2.5 text-sm text-dark font-body">
+              <div className="p-0.5 rounded-full bg-secondary/10 border border-secondary/20">
+                <Check className="w-3.5 h-3.5 text-secondary" />
+              </div>
+              {detail}
+            </li>
+          ))}
+        </ul>
+
+        {/* Card Footer */}
+        <div className="flex justify-between items-center border-t border-primary/5 pt-5 mt-auto">
+          <span className="bg-secondary/5 border border-secondary/10 text-secondary text-xs font-semibold px-3 py-1.5 rounded-full">
+            {tour.badge}
+          </span>
+          <a
+            href={`https://wa.me/50765232363?text=${encodeURIComponent(tour.whatsappMsg)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-4 py-2 flex items-center gap-2 text-sm font-bold shadow-lg hover:shadow-emerald-500/25 transition-all duration-300"
+          >
+            <MessageCircle className="fill-current w-4 h-4" />
+            Reservar
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
 }
 
 export default function Tours() {
@@ -78,20 +189,6 @@ export default function Tours() {
     },
   };
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: (index: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'spring' as const,
-        stiffness: 50,
-        damping: 15,
-        delay: index * 0.1,
-      },
-    }),
-  };
-
   return (
     <section id="tours" className="py-24 bg-light">
       <div className="container mx-auto px-6 md:px-12">
@@ -115,69 +212,7 @@ export default function Tours() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {toursList.map((tour, idx) => (
-            <motion.div
-              key={tour.id}
-              custom={idx}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-50px' }}
-              className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl border border-primary/5 hover:border-primary/10 transition-all duration-500 flex flex-col group"
-            >
-              {/* Image Header */}
-              <div className="relative h-[240px] overflow-hidden">
-                <Image
-                  src={tour.image}
-                  alt={tour.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark/40 to-transparent" />
-                <span className="absolute bottom-5 left-5 flex items-center gap-1.5 bg-dark/85 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/10">
-                  <Clock className="w-3.5 h-3.5 text-accent" />
-                  {tour.duration}
-                </span>
-              </div>
-
-              {/* Card Content */}
-              <div className="p-6 sm:p-8 flex flex-col flex-grow">
-                <h3 className="font-headings font-bold text-xl sm:text-2xl text-primary mb-3">
-                  {tour.title}
-                </h3>
-                <p className="text-gray text-sm sm:text-base leading-relaxed mb-6 font-body">
-                  {tour.desc}
-                </p>
-
-                {/* Details list */}
-                <ul className="list-none p-0 m-0 mb-8 flex flex-col gap-2.5 flex-grow">
-                  {tour.details.map((detail, dIdx) => (
-                    <li key={dIdx} className="flex items-center gap-2.5 text-sm text-dark font-body">
-                      <div className="p-0.5 rounded-full bg-secondary/10 border border-secondary/20">
-                        <Check className="w-3.5 h-3.5 text-secondary" />
-                      </div>
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Card Footer */}
-                <div className="flex justify-between items-center border-t border-primary/5 pt-5 mt-auto">
-                  <span className="bg-secondary/5 border border-secondary/10 text-secondary text-xs font-semibold px-3 py-1.5 rounded-full">
-                    {tour.badge}
-                  </span>
-                  <a
-                    href={`https://wa.me/50760000000?text=${encodeURIComponent(tour.whatsappMsg)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 font-headings font-bold text-sm text-primary hover:text-secondary transition-colors duration-300 group/btn"
-                  >
-                    Reservar por WhatsApp
-                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1.5 transition-transform duration-300" />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
+            <TourCard key={tour.id} tour={tour} idx={idx} />
           ))}
         </div>
       </div>
