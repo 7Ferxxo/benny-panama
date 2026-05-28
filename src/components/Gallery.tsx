@@ -52,7 +52,7 @@ export default function Gallery() {
     visible: (index: number) => ({
       opacity: 1,
       scale: 1,
-      transition: { type: 'spring' as const as const, stiffness: 60, damping: 15, delay: index * 0.08 },
+      transition: { type: 'spring' as const, stiffness: 60, damping: 15, delay: index * 0.08 },
     }),
   };
 
