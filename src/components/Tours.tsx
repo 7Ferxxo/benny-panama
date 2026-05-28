@@ -74,7 +74,7 @@ export default function Tours() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'spring', stiffness: 60, damping: 15 },
+      transition: { type: 'spring' as const, stiffness: 60, damping: 15 },
     },
   };
 
@@ -84,7 +84,7 @@ export default function Tours() {
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 50,
         damping: 15,
         delay: index * 0.1,

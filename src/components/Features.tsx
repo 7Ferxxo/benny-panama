@@ -28,7 +28,7 @@ export default function Features() {
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 70,
         damping: 15,
         delay: index * 0.15,

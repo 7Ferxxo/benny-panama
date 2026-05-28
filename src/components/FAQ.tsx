@@ -54,7 +54,7 @@ export default function FAQ() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
-          transition={{ type: 'spring', stiffness: 60, damping: 15 }}
+          transition={{ type: 'spring' as const, stiffness: 60, damping: 15 }}
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="text-secondary-light font-headings font-bold text-xs uppercase tracking-widest bg-secondary/5 px-3.5 py-1.5 rounded-full border border-secondary/10">
@@ -72,7 +72,7 @@ export default function FAQ() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
-              transition={{ delay: idx * 0.07, type: 'spring', stiffness: 80, damping: 15 }}
+              transition={{ delay: idx * 0.07, type: 'spring' as const, stiffness: 80, damping: 15 }}
               className={`bg-white border rounded-2xl overflow-hidden transition-colors duration-300 ${
                 openIndex === idx ? 'border-primary/20 shadow-sm' : 'border-primary/5'
               }`}

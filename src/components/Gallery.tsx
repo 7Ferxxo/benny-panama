@@ -52,7 +52,7 @@ export default function Gallery() {
     visible: (index: number) => ({
       opacity: 1,
       scale: 1,
-      transition: { type: 'spring' as const, stiffness: 60, damping: 15, delay: index * 0.08 },
+      transition: { type: 'spring' as const as const, stiffness: 60, damping: 15, delay: index * 0.08 },
     }),
   };
 
@@ -64,7 +64,7 @@ export default function Gallery() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
-            transition={{ type: 'spring', stiffness: 60, damping: 15 }}
+            transition={{ type: 'spring' as const, stiffness: 60, damping: 15 }}
             className="text-center max-w-2xl mx-auto mb-16"
           >
             <span className="text-secondary-light font-headings font-bold text-xs uppercase tracking-widest bg-secondary/5 px-3.5 py-1.5 rounded-full border border-secondary/10">

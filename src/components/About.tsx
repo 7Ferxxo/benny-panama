@@ -10,7 +10,7 @@ export default function About() {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { type: 'spring', stiffness: 50, damping: 15 },
+      transition: { type: 'spring' as const, stiffness: 50, damping: 15 },
     },
   };
 
@@ -20,7 +20,7 @@ export default function About() {
       opacity: 1,
       x: 0,
       scale: 1,
-      transition: { type: 'spring', stiffness: 50, damping: 15 },
+      transition: { type: 'spring' as const, stiffness: 50, damping: 15 },
     },
   };
 
