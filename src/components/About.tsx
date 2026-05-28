@@ -51,7 +51,8 @@ export default function About() {
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true, delay: 0.3 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, type: 'spring' as const, stiffness: 80, damping: 15 }}
               className="absolute -bottom-6 -right-2 sm:right-6 lg:-right-4 bg-primary text-white border border-white/10 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl z-20 max-w-[180px] sm:max-w-[200px]"
             >
               <span className="font-headings font-extrabold text-4xl sm:text-5xl text-accent leading-none">
