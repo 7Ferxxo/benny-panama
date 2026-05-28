@@ -79,7 +79,7 @@ export default function Footer() {
               <AtSign className="w-4 h-4" />
             </a>
             <a
-              href="https://wa.me/50760000000"
+              href="https://wa.me/50765232363"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-white/5 hover:bg-accent hover:text-dark flex items-center justify-center transition-all duration-300 text-white"
