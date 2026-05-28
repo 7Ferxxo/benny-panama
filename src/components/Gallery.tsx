@@ -15,8 +15,10 @@ const galleryItems: GalleryItem[] = [
   { image: '/assets/gal_sanblas_boat.png', label: 'Islas San Blas' },
   { image: '/assets/gal_canal_ships.png', label: 'Canal de Panamá' },
   { image: '/assets/gal_casco_roof.png', label: 'Casco Viejo' },
-  { image: '/assets/gal_portobelo_sea.png', label: 'Bahía de Portobelo' },
   { image: '/assets/gal_jungle_trek.png', label: 'Sendero del Chagres' },
+  { image: '/assets/gal_tornillo.jpeg', label: 'El Tornillo (Ciudad Moderna)' },
+  { image: '/assets/gal_chorro.png', label: 'Cascadas Tropicales' },
+  { image: '/assets/gal_bridge.jpeg', label: 'Puente de las Américas' },
 ];
 
 export default function Gallery() {

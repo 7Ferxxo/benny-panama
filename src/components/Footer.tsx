@@ -102,7 +102,7 @@ export default function Footer() {
       </div>
 
       <div className="container mx-auto px-6 md:px-12 pt-8 text-center text-xs text-white/40 font-body">
-        <p>&copy; {new Date().getFullYear()} Benny Panamá. Todos los derechos reservados. Diseñado con pasión.</p>
+        <p>&copy; {new Date().getFullYear()} Benny Panamá. Todos los derechos reservados.</p>
       </div>
     </footer>
   );
