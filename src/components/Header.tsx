@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { scrollToSection } from '@/lib/scrollTo';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,19 +49,7 @@ export default function Header() {
 
   const handleScrollTo = (id: string) => {
     setIsOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
-    }
+    scrollToSection(id);
   };
 
   return (

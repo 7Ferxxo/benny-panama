@@ -10,18 +10,16 @@ interface StatItem {
 }
 
 const stats: StatItem[] = [
-  { value: 14,   suffix: '+', label: 'Años de experiencia' },
-  { value: 200,  suffix: '+', label: 'Tours realizados' },
-  { value: 500,  suffix: '+', label: 'Viajeros felices' },
+  { value: 14,  suffix: '+', label: 'Años de experiencia' },
+  { value: 200, suffix: '+', label: 'Tours realizados' },
+  { value: 500, suffix: '+', label: 'Viajeros felices' },
 ];
 
-function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
+function AnimatedCounter({ value, suffix, play }: { value: number; suffix: string; play: boolean }) {
   const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!play) return;
     const duration = 2000;
     const start = performance.now();
 
@@ -34,10 +32,10 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
     };
 
     requestAnimationFrame(step);
-  }, [isInView, value]);
+  }, [play, value]);
 
   return (
-    <span ref={ref} className="tabular-nums">
+    <span className="tabular-nums">
       {count}
       {suffix}
     </span>
@@ -46,7 +44,7 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
 
 export default function Stats() {
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, margin: '-100px' });
+  const isInView = useInView(containerRef, { once: true, margin: '-80px' });
 
   return (
     <section
@@ -82,7 +80,7 @@ export default function Stats() {
               className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-sm"
             >
               <div className="font-headings font-extrabold text-5xl sm:text-6xl text-accent leading-none mb-3">
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} play={isInView} />
               </div>
               <p className="text-white/70 text-xs sm:text-sm font-headings font-semibold uppercase tracking-widest">
                 {stat.label}

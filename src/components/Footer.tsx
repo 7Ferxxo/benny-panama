@@ -1,23 +1,10 @@
 'use client';
 
 import { AtSign, MessageCircle, Mail } from 'lucide-react';
+import { scrollToSection } from '@/lib/scrollTo';
 
 export default function Footer() {
-  const handleScrollTo = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
-    }
-  };
+  const handleScrollTo = scrollToSection;
 
   return (
     <footer className="bg-[#08100e] text-white/60 py-16 border-t border-white/5">
